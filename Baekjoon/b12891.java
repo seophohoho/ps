@@ -7,29 +7,76 @@ public class b12891 {
 
         int S = sc.nextInt();
         int P = sc.nextInt();
-
         String str = sc.next();
 
         int result=0;
 
-        int cntA = sc.nextInt();
-        int cntC = sc.nextInt();
-        int cntG = sc.nextInt();
-        int cntT = sc.nextInt();
+        int[] inputCnts = new int[4];
+        inputCnts[0] = sc.nextInt();
+        inputCnts[1] = sc.nextInt();
+        inputCnts[2] = sc.nextInt();
+        inputCnts[3] = sc.nextInt();
 
-        for(int i=0;i<=S-P;i++){
-            String subStr = str.substring(i,i+P);
+        int[] cnts = new int[4];
 
-            long resultA = subStr.chars().filter(ch -> ch == 'A').count();
-            long resultC = subStr.chars().filter(ch->ch=='C').count();
-            long resultG = subStr.chars().filter(ch->ch=='G').count();
-            long resultT = subStr.chars().filter(ch->ch=='T').count();
+        for(int i=0;i<P;i++){
+            addChar(cnts,str.charAt(i));
+        }
 
-            if(resultA >= cntA && resultC >= cntC && resultG >= cntG && resultT >= cntT){
+        if(checkValid(cnts,inputCnts)){
+            result++;
+        }
+
+        for(int i=P;i<S;i++){
+            addChar(cnts,str.charAt(i));
+            removeChar(cnts,str.charAt(i-P));
+            if(checkValid(cnts,inputCnts)){
                 result++;
             }
         }
 
         System.out.println(result);
+
+    }
+
+    private static Boolean checkValid(int[] cnts, int[] inputCnts){
+        return cnts[0] >= inputCnts[0] &&
+                cnts[1] >= inputCnts[1] &&
+                cnts[2] >= inputCnts[2] &&
+                cnts[3] >= inputCnts[3];
+    }
+
+    private static void addChar(int[] cnts, char c){
+        switch(c){
+            case 'A':
+                cnts[0]++;
+                break;
+            case 'C':
+                cnts[1]++;
+                break;
+            case 'G':
+                cnts[2]++;
+                break;
+            case 'T':
+                cnts[3]++;
+                break;
+        }
+    }
+
+    private static void removeChar(int[] cnts, char c){
+        switch(c){
+            case 'A':
+                cnts[0]--;
+                break;
+            case 'C':
+                cnts[1]--;
+                break;
+            case 'G':
+                cnts[2]--;
+                break;
+            case 'T':
+                cnts[3]--;
+                break;
+        }
     }
 }
